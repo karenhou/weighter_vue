@@ -1,5 +1,6 @@
 {
   "projects": {
-    "checkAlias": "weighter-fee2d"
+    "checkAlias": "weighter-fee2d",
+    "default": "weighter-fee2d"
   }
 }

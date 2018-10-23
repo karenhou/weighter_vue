@@ -49,16 +49,16 @@ export default new Vuex.Store({
         weight: userData.weight,
         fat: userData.fat
       }).then(()=> {
-        console.log('edit complete')
+        // console.log('edit complete')
         dispatch('getHistories')
-      }).catch(err => {
-          console.log(err)
+      }).catch(() => {
+          // console.log(err)
       })
     },
     deleteWeight({dispatch}, userData) {
       db.collection('history').doc(userData.id).delete()
         .then(() => {
-            console.log('delete')
+            // console.log('delete')
             dispatch('getHistories')
         })
     },
@@ -70,9 +70,9 @@ export default new Vuex.Store({
         user_id: state.user.user_id
       }).then(()=> {
         dispatch('getHistories')
-        console.log('add complete')
-      }).catch(err => {
-        console.log(err);
+        // console.log('add complete')
+      }).catch(() => {
+        // console.log(err);
       })
     },
     getHistories({commit, state}) {
@@ -83,9 +83,9 @@ export default new Vuex.Store({
         let ref = db.collection('history').where('user_id', '==', state.user.user_id).orderBy('timestamp')
         
         ref.onSnapshot(snapshot => {
-          console.log('snapshot')
+          // console.log('snapshot')
             snapshot.docChanges().forEach(change => {
-              console.log('type ' , change.type)
+              // console.log('type ' , change.type)
                 if(change.type === 'added') {
                     let doc = change.doc
                     let history = {
@@ -172,11 +172,11 @@ export default new Vuex.Store({
 
             dispatch('getHistories');
             router.push({ name: 'profile', params: {id: cred.user.uid}})
-          }).catch(err => {
-            console.log('set data err ', err)
+          }).catch(() => {
+            // console.log('set data err ', err)
           })
-      }).catch(err=> {
-          console.log('sign up err ', err)
+      }).catch(()=> {
+          // console.log('sign up err ', err)
       });
     },
     login({commit, dispatch}, userData) {
@@ -202,8 +202,8 @@ export default new Vuex.Store({
 
             dispatch('getHistories');
             router.push({ name: 'profile', params: {id: cred.user.uid}})
-        }).catch(err => {
-            console.log('err in store login ', err.message)
+        }).catch(() => {
+            // console.log('err in store login ', err.message)
         })
     },
     logout({commit}) {
@@ -215,9 +215,9 @@ export default new Vuex.Store({
         localStorage.removeItem('myEmail')
         localStorage.removeItem('expirationDate')
         router.replace('/')
-      }).catch(error => {
+      }).catch(() => {
         // An error happened.
-        console.log('logout ', error)
+        // console.log('logout ', error)
       });
     }
   },
