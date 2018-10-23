@@ -12,12 +12,12 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'home',
       component: Home
     },
     {
       path: '/profile/:id',
-      name: 'Profile',
+      name: 'profile',
       component: Profile/*,
       meta: {
         requiresAuth: true
@@ -27,7 +27,8 @@ const router =  new Router({
       path: '/signup',
       name: 'signup',
       component: SignUp
-    }
+    },
+    { path: '*', redirect: '/' }
   ]
 })
 

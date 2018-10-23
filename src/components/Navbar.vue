@@ -3,7 +3,8 @@
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ alias }}'s wall</a>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
+                <button class="btn btn-danger" v-if="authorized" @click="onLogout">Signout</button>
+                
             </li>
         </ul>
     </nav>
@@ -13,9 +14,23 @@
 export default {
     name: 'Navbar',
     props: ['alias'],
+    computed: {
+        currentUser: function() {
+            return this.$store.getters.user.uid
+        },
+        authorized() {
+            return this.$store.getters.isAuthenticated
+        }
+    },
     data() {
         return {
 
+        }
+    },
+    methods: {
+        onLogout() {
+            this.$store.dispatch('logout')
+            this.$router.push({ name: 'home'})
         }
     }
 }

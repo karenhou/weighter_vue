@@ -1,7 +1,7 @@
 <template>
     <div class="side-bar container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -80,7 +80,7 @@ export default {
 
 <style>
 .side-bar {
-    margin-top: 3em;
+    margin-top: 2.5em;
 }
 
 .submitBtn {
@@ -91,8 +91,9 @@ td i {
     margin-right: 0.4em;
 }
 
-.edit_mode{ 
-    cursor:pointer; color:var(--h20); -webkit-transition: var(--transition-short);  -moz-transition: var(--transition-short);  -o-transition: var(--transition-short); transition: var(--transition-short); margin-right:2%; border-color: blue}
+.edit_mode { 
+    cursor:pointer; color:var(--h20); -webkit-transition: var(--transition-short);  -moz-transition: var(--transition-short);  -o-transition: var(--transition-short); transition: var(--transition-short); margin-right:2%; border-color: blue
+}
 .edit_mode:hover{ color:#666;}
 
 .delete_mode{

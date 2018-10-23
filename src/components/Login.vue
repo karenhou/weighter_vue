@@ -39,16 +39,20 @@ export default {
     methods: {
         login() {
             if(this.email && this.password) {
-                firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-                .then(cred => {
-                    this.$router.push({ name: 'Profile', params: {id: cred.user.uid}})
-                }).catch(err => {
-                    this.feedback = err.message
-                })
-                this.feedback = null
-            } else {
-                this.feedback = 'please fill in both fields'
+                this.$store.dispatch('login', {email: this.email, password: this.password})
+                // this.$router.push({ name: 'Profile', params: {id: this.$store.getters.user.uid}})
             }
+           // if(this.email && this.password) {
+            //     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+            //     .then(cred => {
+            //         this.$router.push({ name: 'Profile', params: {id: cred.user.uid}})
+            //     }).catch(err => {
+            //         this.feedback = err.message
+            //     })
+            //     this.feedback = null
+            // } else {
+            //     this.feedback = 'please fill in both fields'
+            // }
         },
         signup() {
             this.$router.push({ name: 'signup'})

@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(data, index) in histories" :key="index" >
+                <tr v-for="(data, index) in getHistories" :key="index" >
                     <td>{{ data.timestamp }}</td>
                     <td><input type="text" v-model="data.weight" :disabled="disabled">{{$v.data}}</td>
                     <td><input type="text" v-model="data.fat" :disabled="disabled"></td>
@@ -77,6 +77,11 @@ export default {
             disabled: true,
         }
     },
+    computed: {
+        getHistories: function() {
+            return this.$store.getters.historyList
+        }
+    },
     validations: {
         weight: {
             required,
@@ -91,21 +96,25 @@ export default {
     methods: {
         addWeight() {
             if(this.weight && this.fat) {
-                this.feedback = null
-
-                db.collection('history').add({
-                    timestamp: Date.now(),
+                this.$store.dispatch('addWeight', {
                     weight: this.weight,
                     fat: this.fat,
-                    user_id: this.user_id
-                }).then(()=> {
-                    this.weight = null
-                    this.fat = null
-                    console.log('add complete')
-                    //this.$router.go(0);
-                }).catch(err => {
-                    console.log(err)
                 })
+                this.feedback = null
+
+                // db.collection('history').add({
+                //     timestamp: Date.now(),
+                //     weight: this.weight,
+                //     fat: this.fat,
+                //     user_id: this.user_id
+                // }).then(()=> {
+                //     this.weight = null
+                //     this.fat = null
+                //     console.log('add complete')
+                //     //this.$router.go(0);
+                // }).catch(err => {
+                //     console.log(err)
+                // })
             } else {
                 this.feedback = 'You must a correct number'
             }
@@ -116,53 +125,61 @@ export default {
         },
         editWeight(data) {
             this.feedback = null
-
+            
             if(!this.disabled) {
-                db.collection('history').doc(data.id).update({
-                    timestamp: Date.now(),
+                this.$store.dispatch('editWeight', {
+                    id: data.id,
                     weight: data.weight,
                     fat: data.fat
-                }).then(()=> {
-                    console.log('edit complete')
-                    this.disabled = !this.disabled
-                    //this.$router.go(0);
-                }).catch(err => {
-                    console.log(err)
                 })
+                this.disabled = !this.disabled
+                // db.collection('history').doc(data.id).update({
+                //     timestamp: Date.now(),
+                //     weight: data.weight,
+                //     fat: data.fat
+                // }).then(()=> {
+                //     console.log('edit complete')
+                //     this.disabled = !this.disabled
+                //     //this.$router.go(0);
+                // }).catch(err => {
+                //     console.log(err)
+                // })
             } else {
                 this.disabled = !this.disabled
             }
         },
         deleteWeight(id) {
-            db.collection('history').doc(id).delete()
-            .then(() => {
-                console.log('delete')
-                this.histories = this.histories.filter(history => {
-                    return history.id != id
-                })
-                //this.$router.go(this.$route.params.id);
-            })
+            this.$store.dispatch('deleteWeight', {id: id})
+            // db.collection('history').doc(id).delete()
+            // .then(() => {
+            //     console.log('delete')
+            //     this.histories = this.histories.filter(history => {
+            //         return history.id != id
+            //     })
+            //     //this.$router.go(this.$route.params.id);
+            // })
             
         },
     },
     created() {
-        let ref = db.collection('history').where('user_id', '==', this.user_id).orderBy('timestamp')
+        // this.$store.dispatch('getHistory')
+        // let ref = db.collection('history').where('user_id', '==', this.user_id).orderBy('timestamp')
         
-        ref.onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(change => {
-                if(change.type) {
-                    let doc = change.doc
-                    this.histories.push({
-                        id: doc.id,
-                        fat: parseInt(doc.data().fat),
-                        weight: parseInt(doc.data().weight),
-                        timestamp: moment(doc.data().timestamp).format('lll')
-                    })
+        // ref.onSnapshot(snapshot => {
+        //     snapshot.docChanges().forEach(change => {
+        //         if(change.type) {
+        //             let doc = change.doc
+        //             this.histories.push({
+        //                 id: doc.id,
+        //                 fat: parseInt(doc.data().fat),
+        //                 weight: parseInt(doc.data().weight),
+        //                 timestamp: moment(doc.data().timestamp).format('lll')
+        //             })
                     
-                }
+        //         }
                 
-            });
-        })
+        //     });
+        // })
     },
 }
 </script>

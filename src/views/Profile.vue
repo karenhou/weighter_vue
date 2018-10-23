@@ -13,7 +13,7 @@ import db from '@/firebase/init'
 import firebase from 'firebase'
 
 export default {
-    name: 'Profile',
+    name: 'profile',
     data() {
         return {
             profile: null,

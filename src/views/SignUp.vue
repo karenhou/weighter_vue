@@ -9,13 +9,13 @@
             <div class="form-label-group">
                 <label for="email">Email address</label>
                 <input v-model="email" type="email" class="form-control" placeholder="Email address" required="true" autofocus="">
-                <span v-show="errors.has('email')">{{ errors.first('email') }}</span>
+                <!-- <span v-show="errors.has('email')">{{ errors.first('email') }}</span> -->
             </div>
 
             <div class="form-label-group">
                 <label for="password">Password</label>
                 <input v-model="password" type="password" class="form-control" placeholder="Password" required="true">
-                <span v-show="errors.has('password')">{{ errors.first('password') }}</span>
+                <!-- <span v-show="errors.has('password')">{{ errors.first('password') }}</span> -->
             </div>
             <p v-if="feedback" class="text-danger text-center">{{ feedback }}</p>
             <div class="form-label-group">
@@ -73,20 +73,26 @@ export default {
                     if(!result.data.unique) {
                         this.feedback = 'This alias is already in use'
                     } else {
-                        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-                        .then(cred => {
-                            db.collection('users').doc(this.slug).set({
-                                alias: this.alias,
-                                user_id: cred.user.uid
-                            })
-                            console.log(cred.user.uid)
-                        }).then(() => {
-                            this.$router.push({ name: 'Profile'})
-                        }).catch(err=> {
-                            console.log(err)
-                            this.feedback = err.message
+                        this.$store.dispatch('signUp', {
+                            slug: this.slug,
+                            alias: this.alias,
+                            email: this.email,
+                            password: this.password
                         })
-                        this.feedback = 'This alias is available'
+                        // firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+                        // .then(cred => {
+                        //     db.collection('users').doc(this.slug).set({
+                        //         alias: this.alias,
+                        //         user_id: cred.user.uid
+                        //     })
+                        //     console.log(cred.user.uid)
+                        // }).then(() => {
+                        //     this.$router.push({ name: 'Profile'})
+                        // }).catch(err=> {
+                        //     console.log(err)
+                        //     this.feedback = err.message
+                        // })
+                        // this.feedback = 'This alias is available'
                     }
                 })
             } else {
