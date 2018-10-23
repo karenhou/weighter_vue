@@ -1,6 +1,6 @@
 <template>
     <div class="container login">
-        <form class="form-login" @submit.prevent="login">
+        <form class="form-login" @submit.prevent="onLogin">
             <div class="text-center mb-4">
                 <img class="mb-4" src="#" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Login Tables</h1>
@@ -18,7 +18,7 @@
             <p v-if="feedback" class="text-danger text-center">{{ feedback }}</p>
             <p class="btns text-center">
                 <router-link to="/signup" class="btn btn-primary my-2">SignUp</router-link>
-                <button class="btn btn-primary my-2" @click="login">Login</button>
+                <button class="btn btn-primary my-2" @click="onLogin">Login</button>
             </p>
         </form>
     </div>
@@ -37,10 +37,9 @@ export default {
         }
     },
     methods: {
-        login() {
+        onLogin() {
             if(this.email && this.password) {
                 this.$store.dispatch('login', {email: this.email, password: this.password})
-                // this.$router.push({ name: 'Profile', params: {id: this.$store.getters.user.uid}})
             }
            // if(this.email && this.password) {
             //     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
@@ -54,10 +53,11 @@ export default {
             //     this.feedback = 'please fill in both fields'
             // }
         },
-        signup() {
-            this.$router.push({ name: 'signup'})
-        }
-    }
+        // signup() {
+        //     this.$router.push({ name: 'signup'})
+        // }
+    },
+    
 }
 </script>
 

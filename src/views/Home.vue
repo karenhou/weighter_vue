@@ -16,6 +16,12 @@ export default {
   name: 'Home',
   components: {
     appLogin: Login
+  },
+  created() {
+      console.log('is auth? in login', this.$store.getters.isAuthenticated)
+      if(this.$store.getters.isAuthenticated) {
+          this.$router.push({ name: 'profile', params: {id: this.$store.getters.user.user_id}})
+      }
   }
 }
 </script>

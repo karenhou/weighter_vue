@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(data, index) in getHistories" :key="index" >
+                <tr v-for="(data, index) in getHistoriesList" :key="index" >
                     <td>{{ data.timestamp }}</td>
                     <td><input type="text" v-model="data.weight" :disabled="disabled">{{$v.data}}</td>
                     <td><input type="text" v-model="data.fat" :disabled="disabled"></td>
@@ -61,13 +61,10 @@
 </template>
 
 <script>
-import moment from 'moment'
-import db from '@/firebase/init'
 import { required, numeric} from 'vuelidate/lib/validators'
 
 export default {
     name: 'Table',
-    props: ['user_id'],
     data() {
         return {
             weight: null,
@@ -78,7 +75,7 @@ export default {
         }
     },
     computed: {
-        getHistories: function() {
+        getHistoriesList: function() {
             return this.$store.getters.historyList
         }
     },
@@ -101,20 +98,6 @@ export default {
                     fat: this.fat,
                 })
                 this.feedback = null
-
-                // db.collection('history').add({
-                //     timestamp: Date.now(),
-                //     weight: this.weight,
-                //     fat: this.fat,
-                //     user_id: this.user_id
-                // }).then(()=> {
-                //     this.weight = null
-                //     this.fat = null
-                //     console.log('add complete')
-                //     //this.$router.go(0);
-                // }).catch(err => {
-                //     console.log(err)
-                // })
             } else {
                 this.feedback = 'You must a correct number'
             }
@@ -133,54 +116,14 @@ export default {
                     fat: data.fat
                 })
                 this.disabled = !this.disabled
-                // db.collection('history').doc(data.id).update({
-                //     timestamp: Date.now(),
-                //     weight: data.weight,
-                //     fat: data.fat
-                // }).then(()=> {
-                //     console.log('edit complete')
-                //     this.disabled = !this.disabled
-                //     //this.$router.go(0);
-                // }).catch(err => {
-                //     console.log(err)
-                // })
             } else {
                 this.disabled = !this.disabled
             }
         },
         deleteWeight(id) {
             this.$store.dispatch('deleteWeight', {id: id})
-            // db.collection('history').doc(id).delete()
-            // .then(() => {
-            //     console.log('delete')
-            //     this.histories = this.histories.filter(history => {
-            //         return history.id != id
-            //     })
-            //     //this.$router.go(this.$route.params.id);
-            // })
-            
         },
-    },
-    created() {
-        // this.$store.dispatch('getHistory')
-        // let ref = db.collection('history').where('user_id', '==', this.user_id).orderBy('timestamp')
-        
-        // ref.onSnapshot(snapshot => {
-        //     snapshot.docChanges().forEach(change => {
-        //         if(change.type) {
-        //             let doc = change.doc
-        //             this.histories.push({
-        //                 id: doc.id,
-        //                 fat: parseInt(doc.data().fat),
-        //                 weight: parseInt(doc.data().weight),
-        //                 timestamp: moment(doc.data().timestamp).format('lll')
-        //             })
-                    
-        //         }
-                
-        //     });
-        // })
-    },
+    }
 }
 </script>
 

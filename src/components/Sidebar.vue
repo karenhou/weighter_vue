@@ -49,8 +49,8 @@
                         <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                     </div>
                 </div>
-                <app-table :user_id="this.user_id"></app-table>
-                <app-graph :user_id="this.user_id" :data="this.histories"></app-graph>
+                <app-table></app-table>
+                <app-graph></app-graph>
             </main>
         </div>
     </div>
@@ -62,13 +62,8 @@ import Graph from '@/components/Graph'
 
 export default {
     name: 'Sidebar',
-    props: ['user_id'],
     data() {
         return {
-            weight: null,
-            fat: null,
-            feedback: null,
-            histories: [],
         }
     },
     components: {

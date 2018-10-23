@@ -26,7 +26,6 @@
                 <button class="btn btn-primary my-2" @click="signup">SignUp</button>
                 <router-link to="/login" class="btn btn-primary my-2">Login</router-link>
             </p>
-            <!--router-link to="/newprofile" class="btn btn-dark my-2">test</router-link-->
         </form>
         
     </div>
@@ -34,7 +33,6 @@
 <script>
 /* eslint-disable */
 import slugify from 'slugify'
-import db from '@/firebase/init'
 import firebase from 'firebase'
 import functions from 'firebase/functions'
 import { required, minLength} from 'vuelidate/lib/validators'
@@ -79,20 +77,6 @@ export default {
                             email: this.email,
                             password: this.password
                         })
-                        // firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-                        // .then(cred => {
-                        //     db.collection('users').doc(this.slug).set({
-                        //         alias: this.alias,
-                        //         user_id: cred.user.uid
-                        //     })
-                        //     console.log(cred.user.uid)
-                        // }).then(() => {
-                        //     this.$router.push({ name: 'Profile'})
-                        // }).catch(err=> {
-                        //     console.log(err)
-                        //     this.feedback = err.message
-                        // })
-                        // this.feedback = 'This alias is available'
                     }
                 })
             } else {
