@@ -147,36 +147,37 @@ export default new Vuex.Store({
     signUp({commit, dispatch}, userData) {
       firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password)
       .then(cred => {
+        // console.log(cred)
+          cred.user.getIdTokenResult().then(x => {
+            // console.log('token ', x)
+            localStorage.setItem('myToken', x.token);
+            localStorage.setItem('myEmail', cred.user.email);
+            localStorage.setItem('expirationDate', x.expirationDate);
+            localStorage.setItem('user_id', cred.user.uid)
+            commit('authUser', {
+              accessToken: x.token,
+              authorized: true
+            });
+
+            commit('storeUser', {
+              user_id: cred.user.uid,
+              email: cred.user.email
+            });
+
+            dispatch('setLogoutTimer', 3600);
+          })
 
           db.collection('users').doc(userData.slug).set({
             alias: userData.alias,
             user_id: cred.user.uid
           }).then(() => {
-            commit('storeUser', {
-              user_id: cred.user.uid,
-              email: cred.user.email
-            })
-
-            commit('authUser', {
-              accessToken: cred.qa,
-              authorized: true,
-            })
-            
-            cred.user.getIdTokenResult().then(x => {
-              localStorage.setItem('myToken', x.token);
-              localStorage.setItem('expirationDate', x.expirationDate);
-              localStorage.setItem('myEmail', cred.user.email);
-              
-              dispatch('setLogoutTimer', 3600*1000)
-            })
-
             dispatch('getHistories');
             router.push({ name: 'profile', params: {id: cred.user.uid}})
           }).catch(() => {
-            // console.log('set data err ', err)
+            // console.log('sign up err ', err)
           })
       }).catch(()=> {
-          // console.log('sign up err ', err)
+          // console.log('sign up after create ', err)
       });
     },
     login({commit, dispatch}, userData) {
